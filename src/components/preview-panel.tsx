@@ -1,9 +1,11 @@
 import { EmptyState } from "@/components/empty-state";
+import { PreviewImage } from "@/components/preview-image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Screenshot } from "@/types";
 import { Download, FileImage } from "lucide-react";
 
-export function PreviewPanel() {
+export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
   return (
     <Card>
       <Card.Header>
@@ -11,8 +13,12 @@ export function PreviewPanel() {
           <FileImage className="size-4 text-slate-500" /> 预览区域
         </Card.Title>
       </Card.Header>
-      <Card.Body>
-        <PreviewPanelEmptyState />
+      <Card.Body className="overflow-auto">
+        {screenshots.length > 0 ? (
+          <PreviewImage screenshots={screenshots} />
+        ) : (
+          <PreviewPanelEmptyState />
+        )}
       </Card.Body>
       <Card.Footer>
         <Button className="w-full" size="lg">
