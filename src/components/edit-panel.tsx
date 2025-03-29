@@ -15,13 +15,7 @@ export function EditPanel({
   onScreenshotsChange: (screenshots: Screenshot[]) => void;
 }) {
   const handleSceenshotsUpload = (filelist: FileList) => {
-    const newImageUrls: string[] = [];
-
-    for (const file of filelist) {
-      const url = URL.createObjectURL(file);
-      newImageUrls.push(url);
-    }
-
+    const newImageUrls = Array.from(filelist, URL.createObjectURL);
     const newScreenshots = fromImageSrcsToScreenshots(
       newImageUrls,
       screenshots,
