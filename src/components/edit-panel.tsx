@@ -3,6 +3,7 @@ import { ScreenshotList } from "@/components/screenshot-list";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FilePicker } from "@/components/ui/file-picker";
+import { fromImageSrcsToScreenshots } from "@/lib/business";
 import { Screenshot } from "@/types";
 import { FileImage, Plus } from "lucide-react";
 
@@ -14,33 +15,17 @@ export function EditPanel({
   onScreenshotsChange: (screenshots: Screenshot[]) => void;
 }) {
   const handleSceenshotsUpload = (filelist: FileList) => {
-    const newUrls: string[] = [];
+    const newImageUrls: string[] = [];
 
     for (const file of filelist) {
       const url = URL.createObjectURL(file);
-      newUrls.push(url);
+      newImageUrls.push(url);
     }
 
-    const newScreenshots = newUrls.map((imageUrl, idx) => {
-      const clipArea: Screenshot["clipArea"] =
-        screenshots.length === 0 && idx === 0
-          ? {
-              topPcnt: 0,
-              heightPcnt: 1,
-            }
-          : {
-              topPcnt: 0.9,
-              heightPcnt: 0.1,
-            };
-
-      const newScreenshot: Screenshot = {
-        id: crypto.randomUUID(),
-        imageUrl,
-        clipArea,
-      };
-
-      return newScreenshot;
-    });
+    const newScreenshots = fromImageSrcsToScreenshots(
+      newImageUrls,
+      screenshots,
+    );
 
     onScreenshotsChange([...screenshots, ...newScreenshots]);
   };
