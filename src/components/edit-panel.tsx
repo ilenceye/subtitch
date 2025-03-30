@@ -26,19 +26,21 @@ export function EditPanel({
 
   return (
     <Card>
-      <Card.Header className="flex items-center justify-between">
+      <Card.Header>
         <Card.Title>
           <FileImage className="size-4 text-slate-500" /> 已上传截图
         </Card.Title>
         {screenshots.length > 0 && (
-          <Button
-            variant="ghost"
-            className="size-8 rounded text-slate-500 hover:bg-slate-100 hover:text-slate-700"
-            title="清空已上传截图"
-            onClick={() => onScreenshotsChange([])}
-          >
-            <Trash2 />
-          </Button>
+          <Card.Menu>
+            <Button
+              variant="ghost"
+              className="size-8 rounded text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+              title="清空已上传截图"
+              onClick={() => onScreenshotsChange([])}
+            >
+              <Trash2 />
+            </Button>
+          </Card.Menu>
         )}
       </Card.Header>
       <Card.Body className="overflow-auto">
