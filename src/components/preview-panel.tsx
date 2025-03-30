@@ -1,11 +1,22 @@
+import { useEffect, useState } from "react";
+
 import { EmptyState } from "@/components/empty-state";
-import { PreviewImage } from "@/components/preview-image";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { mergeImages } from "@/lib/business";
+import { downloadImage } from "@/lib/helper";
 import { Screenshot } from "@/types";
 import { Download, FileImage } from "lucide-react";
 
 export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
+  const [previewImageUrl, setPreviewImageUrl] = useState<string>();
+
+  useEffect(() => {
+    mergeImages(screenshots, (outputImageUrl) => {
+      setPreviewImageUrl(outputImageUrl);
+    });
+  }, [screenshots]);
+
   return (
     <Card>
       <Card.Header>
@@ -15,13 +26,18 @@ export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
       </Card.Header>
       <Card.Body className="overflow-auto">
         {screenshots.length > 0 ? (
-          <PreviewImage screenshots={screenshots} />
+          <img src={previewImageUrl} alt="" />
         ) : (
           <PreviewPanelEmptyState />
         )}
       </Card.Body>
       <Card.Footer>
-        <Button className="w-full" size="lg">
+        <Button
+          className="w-full"
+          size="lg"
+          disabled={!previewImageUrl}
+          onClick={() => downloadImage(previewImageUrl!)}
+        >
           <Download /> 保存预览图
         </Button>
       </Card.Footer>
