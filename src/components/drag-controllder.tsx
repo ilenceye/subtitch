@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { type UseDraggableOptions, useDraggable } from "@/hooks/use-draggable";
 import { toPercentage } from "@/lib/helper";
-import { Prettify } from "@/lib/type";
+import { Prettify } from "@/types";
 
 type DragControllerProps = Prettify<
   UseDraggableOptions & { onTopPcntChange: (topPcnt: number) => void }
