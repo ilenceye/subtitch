@@ -8,8 +8,14 @@ export function Card({ children }: { children?: React.ReactNode }) {
   );
 }
 
-function CardHeader({ children }: { children?: React.ReactNode }) {
-  return <div className="bg-card px-4 py-3">{children}</div>;
+function CardHeader({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) {
+  return <div className={cn("bg-card px-4 py-3", className)}>{children}</div>;
 }
 
 function CardTitle({ children }: { children?: React.ReactNode }) {

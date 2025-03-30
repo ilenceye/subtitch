@@ -1,11 +1,11 @@
 import { EmptyState } from "@/components/empty-state";
 import { ScreenshotList } from "@/components/screenshot-list";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FilePicker } from "@/components/ui/file-picker";
 import { fromImageSrcsToScreenshots } from "@/lib/business";
 import { Screenshot } from "@/types";
-import { FileImage, Plus } from "lucide-react";
+import { FileImage, Plus, Trash2 } from "lucide-react";
 
 export function EditPanel({
   screenshots,
@@ -26,10 +26,20 @@ export function EditPanel({
 
   return (
     <Card>
-      <Card.Header>
+      <Card.Header className="flex items-center justify-between">
         <Card.Title>
           <FileImage className="size-4 text-slate-500" /> 已上传截图
         </Card.Title>
+        {screenshots.length > 0 && (
+          <Button
+            variant="ghost"
+            className="size-8 rounded text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+            title="清空已上传截图"
+            onClick={() => onScreenshotsChange([])}
+          >
+            <Trash2 />
+          </Button>
+        )}
       </Card.Header>
       <Card.Body className="overflow-auto">
         {screenshots.length > 0 ? (
