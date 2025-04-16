@@ -12,9 +12,13 @@ export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
   const [previewImageUrl, setPreviewImageUrl] = useState<string>();
 
   useEffect(() => {
-    mergeImages(screenshots, (outputImageUrl) => {
-      setPreviewImageUrl(outputImageUrl);
-    });
+    if (screenshots.length > 0) {
+      mergeImages(screenshots, (outputImageUrl) => {
+        setPreviewImageUrl(outputImageUrl);
+      });
+    } else {
+      setPreviewImageUrl(undefined);
+    }
   }, [screenshots]);
 
   return (
