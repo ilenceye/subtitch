@@ -1,4 +1,5 @@
 import { DragController } from "@/components/drag-controllder";
+import { toPercentage } from "@/lib/helper";
 import { Screenshot } from "@/types";
 
 export function ScreenshotList({
@@ -21,6 +22,7 @@ export function ScreenshotList({
       {screenshots.map((item, idx) => (
         <ScreenshotListItem
           key={item.id}
+          idx={idx}
           screenshot={item}
           onScreenshotChange={(screenshot) =>
             handleSceenshotChange(screenshot, idx)
@@ -32,9 +34,11 @@ export function ScreenshotList({
 }
 
 export function ScreenshotListItem({
+  idx,
   screenshot,
   onScreenshotChange,
 }: {
+  idx: number;
   screenshot: Screenshot;
   onScreenshotChange: (screenshot: Screenshot) => void;
 }) {
@@ -59,6 +63,18 @@ export function ScreenshotListItem({
   return (
     <div className="relative">
       <img src={screenshot.imageUrl} alt="" />
+      {idx > 0 && (
+        <>
+          <div
+            className="absolute top-0 w-full bg-black/50"
+            style={{ bottom: toPercentage(1 - topDragCtrlTopPcnt, 4) }}
+          />
+          <div
+            className="absolute bottom-0 w-full bg-black/50"
+            style={{ top: toPercentage(bottomDragCtrlTopPcnt, 4) }}
+          />
+        </>
+      )}
       <DragController
         topPcnt={topDragCtrlTopPcnt}
         onTopPcntChange={(value) => handleDrag(value, bottomDragCtrlTopPcnt)}
