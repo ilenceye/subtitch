@@ -22,7 +22,7 @@ export default function App() {
 
   const loadDemoScreenshots = async () => {
     const imagesPaths = await loadDemoImages();
-    const demoScreenshots = fromImageSrcsToScreenshots(imagesPaths, []);
+    const demoScreenshots = fromImageSrcsToScreenshots(imagesPaths);
     setScreenshots(demoScreenshots);
   };
 

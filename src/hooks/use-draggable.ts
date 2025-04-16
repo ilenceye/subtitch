@@ -1,21 +1,22 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 export type UseDraggableOptions = {
-  initialTopPcnt?: number;
+  onTopPcntChange: (topPcnt: number) => void;
   topPcntRange?: [number, number];
 };
 
-const DEFAULT_OPTIONS: Required<UseDraggableOptions> = {
-  initialTopPcnt: 0,
+const DEFAULT_OPTIONS: Required<Pick<UseDraggableOptions, "topPcntRange">> = {
   topPcntRange: [-Infinity, Infinity],
 };
 
 export const useDraggable = <T extends HTMLElement>(
-  options?: UseDraggableOptions,
+  options: UseDraggableOptions,
 ) => {
-  const { initialTopPcnt, topPcntRange } = { ...DEFAULT_OPTIONS, ...options };
+  const { topPcntRange, onTopPcntChange } = {
+    ...DEFAULT_OPTIONS,
+    ...options,
+  };
 
-  const [topPcnt, setTopPcnt] = useState(initialTopPcnt);
   const ref = useRef<T>(null);
   const isDragging = useRef(false);
 
@@ -40,7 +41,7 @@ export const useDraggable = <T extends HTMLElement>(
     const newTopPcnt = dy / parentRect.height;
 
     if (topPcntRange[0] <= newTopPcnt && newTopPcnt <= topPcntRange[1]) {
-      setTopPcnt(newTopPcnt);
+      onTopPcntChange(newTopPcnt);
     }
   };
 
@@ -51,5 +52,5 @@ export const useDraggable = <T extends HTMLElement>(
     document.removeEventListener("mouseup", handleMouseUp);
   };
 
-  return { ref, topPcnt, handleMouseDown };
+  return { ref, handleMouseDown };
 };

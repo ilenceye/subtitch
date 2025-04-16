@@ -1,25 +1,17 @@
-import { useEffect } from "react";
-
-import { type UseDraggableOptions, useDraggable } from "@/hooks/use-draggable";
+import { useDraggable } from "@/hooks/use-draggable";
 import { toPercentage } from "@/lib/helper";
-import { Prettify } from "@/types";
-
-type DragControllerProps = Prettify<
-  UseDraggableOptions & { onTopPcntChange: (topPcnt: number) => void }
->;
 
 export function DragController({
-  initialTopPcnt,
+  topPcnt,
   onTopPcntChange,
-}: DragControllerProps) {
-  const { ref, topPcnt, handleMouseDown } = useDraggable<HTMLDivElement>({
-    initialTopPcnt,
+}: {
+  topPcnt: number;
+  onTopPcntChange: (topPcnt: number) => void;
+}) {
+  const { ref, handleMouseDown } = useDraggable<HTMLDivElement>({
     topPcntRange: [0, 1],
+    onTopPcntChange,
   });
-
-  useEffect(() => {
-    onTopPcntChange(topPcnt);
-  }, [topPcnt]);
 
   return (
     <div
