@@ -1,4 +1,4 @@
-import { Screenshot } from "@/types";
+import { Annotation, Screenshot } from "@/types";
 
 export function fromImageSrcsToScreenshots(imageSrcs: string[]) {
   return imageSrcs.map((imageUrl) => ({
@@ -14,10 +14,13 @@ export function fromImageSrcsToScreenshots(imageSrcs: string[]) {
 export function mergeImages(
   {
     screenshots,
-    annotation = "",
+    annotation = {
+      text: "",
+      position: "bottom-right",
+    },
   }: {
     screenshots: Screenshot[];
-    annotation?: string;
+    annotation?: Annotation;
   },
   callback: (DataURL: string) => void,
 ) {
@@ -92,12 +95,17 @@ export function mergeImages(
   }
 
   function addAnnotation() {
-    if (!ctx || annotation === "") return;
-    annotation = `©${annotation}`;
+    let { text, position } = annotation;
+    if (!ctx || text === "") return;
+    text = `©${text}`;
 
     ctx.font = "16px normal";
     ctx.fillStyle = "rgb(255 255 255 / 60%)";
-    const { width } = ctx.measureText(annotation);
-    ctx.fillText(annotation, canvas.width - width - 8, 22);
+
+    const { width } = ctx.measureText(text);
+    const x = position.includes("left") ? 6 : canvas.width - width - 8;
+    const y = position.includes("top") ? 22 : canvas.height - 10;
+
+    ctx.fillText(text, x, y);
   }
 }

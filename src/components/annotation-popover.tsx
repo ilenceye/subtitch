@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { AnnotationPositionPicker } from "@/components/annotation-position-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -7,17 +8,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import type { Annotation, AnnotationPosition } from "@/types";
 import { Label } from "@radix-ui/react-label";
 import { TypeIcon } from "lucide-react";
 
 export function AnnotationPopover({
-  initialAnnotation,
+  defaultAnnotation,
   onAnnotationChanage,
 }: {
-  initialAnnotation: string;
-  onAnnotationChanage: (annotation: string) => void;
+  defaultAnnotation: Annotation;
+  onAnnotationChanage: (annotation: Annotation) => void;
 }) {
-  const label = initialAnnotation === "" ? "添加标注" : "编辑标注";
+  const label = defaultAnnotation.text === "" ? "添加标注" : "编辑标注";
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -25,13 +27,17 @@ export function AnnotationPopover({
     e.preventDefault();
 
     const data = new FormData(e.currentTarget);
-    const annotation = data.get("annotation") as string;
+    const text = data.get("text") as string;
+    const position = data.get("position") as AnnotationPosition;
 
     setIsOpen(false);
 
-    if (annotation !== initialAnnotation) {
+    if (
+      text !== defaultAnnotation.text ||
+      position !== defaultAnnotation.position
+    ) {
       setTimeout(() => {
-        onAnnotationChanage(annotation);
+        onAnnotationChanage({ text, position });
       }, 150);
     }
   };
@@ -48,19 +54,24 @@ export function AnnotationPopover({
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end">
-        <form onSubmit={handleSubmit}>
-          <div>
-            <Label htmlFor="annotation">{label}</Label>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="grid gap-2">
+            <Label htmlFor="text">{label}</Label>
             <Input
-              id="annotation"
-              name="annotation"
-              className="mt-2"
-              defaultValue={initialAnnotation}
+              id="text"
+              name="text"
+              defaultValue={defaultAnnotation.text}
               autoComplete="off"
               placeholder="请输入文字标注内容..."
             />
           </div>
-          <div className="mt-4 flex justify-end gap-2">
+          <div className="grid gap-2">
+            <Label>标注位置</Label>
+            <AnnotationPositionPicker
+              defaultValue={defaultAnnotation.position}
+            />
+          </div>
+          <div className="flex justify-end gap-2">
             <Button
               type="button"
               variant="ghost"

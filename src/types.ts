@@ -10,3 +10,14 @@ export type Screenshot = {
     heightPcnt: number;
   };
 };
+
+export type AnnotationPosition =
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right";
+
+export type Annotation = {
+  text: string;
+  position: AnnotationPosition;
+};

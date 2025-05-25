@@ -4,28 +4,37 @@ import { AnnotationPopover } from "@/components/annotation-popover";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { mergeImages } from "@/lib/business";
 import { downloadImage } from "@/lib/helper";
-import { Screenshot } from "@/types";
+import { AnnotationPosition, Screenshot } from "@/types";
 import { Download, FileImage } from "lucide-react";
 
 export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
   const [previewImageUrl, setPreviewImageUrl] = useState<string>();
-  const [annotation, setAnnotation] = useState("");
+  const [annotationText, setAnnotationText] = useState("");
+  const [annotationPosition, setAnnotationPosition] =
+    useLocalStorage<AnnotationPosition>("annotation-position", "bottom-right");
 
   useEffect(() => {
     if (screenshots.length > 0) {
-      mergeImages({ screenshots, annotation }, (outputImageUrl) => {
-        setPreviewImageUrl(outputImageUrl);
-      });
+      mergeImages(
+        {
+          screenshots,
+          annotation: { text: annotationText, position: annotationPosition },
+        },
+        (outputImageUrl) => {
+          setPreviewImageUrl(outputImageUrl);
+        },
+      );
     } else {
       setPreviewImageUrl(undefined);
     }
-  }, [screenshots, annotation]);
+  }, [screenshots, annotationText, annotationPosition]);
 
   useEffect(() => {
     if (screenshots.length === 0) {
-      setAnnotation("");
+      setAnnotationText("");
     }
   }, [screenshots]);
 
@@ -38,8 +47,14 @@ export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
         {screenshots.length > 0 && (
           <Card.Menu>
             <AnnotationPopover
-              initialAnnotation={annotation}
-              onAnnotationChanage={setAnnotation}
+              defaultAnnotation={{
+                text: annotationText,
+                position: annotationPosition,
+              }}
+              onAnnotationChanage={({ text, position }) => {
+                setAnnotationText(text);
+                setAnnotationPosition(position);
+              }}
             />
           </Card.Menu>
         )}
