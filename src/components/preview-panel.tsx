@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { AnnotationPopover } from "@/components/annotation-popover";
 import { EmptyState } from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,14 +11,21 @@ import { Download, FileImage } from "lucide-react";
 
 export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
   const [previewImageUrl, setPreviewImageUrl] = useState<string>();
+  const [annotation, setAnnotation] = useState("");
 
   useEffect(() => {
     if (screenshots.length > 0) {
-      mergeImages(screenshots, (outputImageUrl) => {
+      mergeImages({ screenshots, annotation }, (outputImageUrl) => {
         setPreviewImageUrl(outputImageUrl);
       });
     } else {
       setPreviewImageUrl(undefined);
+    }
+  }, [screenshots, annotation]);
+
+  useEffect(() => {
+    if (screenshots.length === 0) {
+      setAnnotation("");
     }
   }, [screenshots]);
 
@@ -27,6 +35,14 @@ export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
         <Card.Title>
           <FileImage className="size-4 text-slate-500" /> 预览区域
         </Card.Title>
+        {screenshots.length > 0 && (
+          <Card.Menu>
+            <AnnotationPopover
+              initialAnnotation={annotation}
+              onAnnotationChanage={setAnnotation}
+            />
+          </Card.Menu>
+        )}
       </Card.Header>
       <Card.Body className="overflow-auto">
         {screenshots.length > 0 ? (

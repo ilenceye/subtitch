@@ -12,7 +12,13 @@ export function fromImageSrcsToScreenshots(imageSrcs: string[]) {
 }
 
 export function mergeImages(
-  screenshots: Screenshot[],
+  {
+    screenshots,
+    annotation = "",
+  }: {
+    screenshots: Screenshot[];
+    annotation?: string;
+  },
   callback: (DataURL: string) => void,
 ) {
   const canvas = document.createElement("canvas");
@@ -45,6 +51,10 @@ export function mergeImages(
         canvas.height = canvasHeight;
 
         drawImages();
+
+        addAnnotation();
+
+        callback(canvas.toDataURL("image/png"));
       }
     };
   });
@@ -79,7 +89,15 @@ export function mergeImages(
         dy = dy + sHeight;
       }
     });
+  }
 
-    callback(canvas.toDataURL("image/png"));
+  function addAnnotation() {
+    if (!ctx || annotation === "") return;
+    annotation = `©${annotation}`;
+
+    ctx.font = "16px normal";
+    ctx.fillStyle = "rgb(255 255 255 / 60%)";
+    const { width } = ctx.measureText(annotation);
+    ctx.fillText(annotation, canvas.width - width - 8, 22);
   }
 }
