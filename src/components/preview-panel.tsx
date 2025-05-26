@@ -71,7 +71,7 @@ export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
           className="w-full"
           size="lg"
           disabled={!previewImageUrl}
-          onClick={() => downloadImage(previewImageUrl!)}
+          onClick={() => downloadImage(previewImageUrl!, annotationText)}
         >
           <Download /> 保存预览图
         </Button>
