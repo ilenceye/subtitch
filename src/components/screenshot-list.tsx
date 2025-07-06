@@ -1,6 +1,5 @@
 import { DragController } from "@/components/drag-controllder";
-import { cn } from "@/lib/classnames";
-import { toPercentage } from "@/lib/helper";
+import { Mask } from "@/components/mask";
 import { Screenshot } from "@/types";
 
 export function ScreenshotList({
@@ -63,23 +62,13 @@ export function ScreenshotListItem({
 
   return (
     <div className="relative">
-      <div
-        className={cn(
-          "relative",
-          idx > 0 &&
-            "before:absolute before:top-0 before:h-[var(--top-mask-height)] before:w-full before:bg-black/50",
-          idx > 0 &&
-            "after:absolute after:bottom-0 after:h-[var(--bottom-mask-height)] after:w-full after:bg-black/50",
-        )}
-        style={
-          {
-            "--top-mask-height": toPercentage(topDragCtrlTopPcnt, 4),
-            "--bottom-mask-height": toPercentage(1 - bottomDragCtrlTopPcnt, 4),
-          } as React.CSSProperties
-        }
-      >
+      {idx === 0 ? (
         <img src={screenshot.imageUrl} alt="" />
-      </div>
+      ) : (
+        <Mask topPcnt={topDragCtrlTopPcnt} bottomPcnt={bottomDragCtrlTopPcnt}>
+          <img src={screenshot.imageUrl} alt="" />
+        </Mask>
+      )}
       <DragController
         topPcnt={topDragCtrlTopPcnt}
         onTopPcntChange={(value) => handleDrag(value, bottomDragCtrlTopPcnt)}
