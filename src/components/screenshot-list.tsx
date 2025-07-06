@@ -62,12 +62,9 @@ export function ScreenshotListItem({
 
   return (
     <div className="relative">
-      {idx === 0 ? (
-        <img src={screenshot.imageUrl} alt="" />
-      ) : (
-        <Mask topPcnt={topDragCtrlTopPcnt} bottomPcnt={bottomDragCtrlTopPcnt}>
-          <img src={screenshot.imageUrl} alt="" />
-        </Mask>
+      <img src={screenshot.imageUrl} alt="" />
+      {idx > 0 && (
+        <Mask topPcnt={topDragCtrlTopPcnt} bottomPcnt={bottomDragCtrlTopPcnt} />
       )}
       <DragController
         topPcnt={topDragCtrlTopPcnt}
