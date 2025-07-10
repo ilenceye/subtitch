@@ -1,4 +1,3 @@
-import { EmptyState } from "@/components/empty-state";
 import { ScreenshotList } from "@/components/screenshot-list";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { FilePicker } from "@/components/ui/file-picker";
 import { useConfigContext } from "@/context/config-provider";
 import { fromImageSrcsToScreenshots } from "@/lib/business";
 import { Screenshot } from "@/types";
-import { FileImage, Plus, Trash2 } from "lucide-react";
+import { FileImage, Plus, Trash2, UploadIcon } from "lucide-react";
 
 export function EditPanel({
   screenshots,
@@ -66,23 +65,15 @@ export function EditPanel({
             onScreenshotsChange={onScreenshotsChange}
           />
         ) : (
-          <EditPanelEmptyState />
+          <FilePicker
+            accept={["image/*"]}
+            className="flex h-full w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed text-slate-500"
+            onUpload={handleSceenshotsUpload}
+          >
+            <UploadIcon className="size-4" /> 上传截图
+          </FilePicker>
         )}
       </Card.Body>
     </Card>
-  );
-}
-
-function EditPanelEmptyState() {
-  return (
-    <EmptyState>
-      <EmptyState.Header>
-        <FileImage className="text-slate-400" />
-      </EmptyState.Header>
-      <EmptyState.Title>暂无上传屏幕截图</EmptyState.Title>
-      <EmptyState.Description>
-        点击上方的"添加屏幕截图"按钮上传字幕截图
-      </EmptyState.Description>
-    </EmptyState>
   );
 }

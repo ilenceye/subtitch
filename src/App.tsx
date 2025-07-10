@@ -40,7 +40,7 @@ export default function App() {
     <ConfigProvider value={{ config, ...rest }}>
       <div className="flex h-screen">
         <main className="mx-auto h-full w-full max-w-7xl">
-          <div className="grid h-full gap-4 p-4 lg:grid-cols-2">
+          <div className="grid h-full grid-rows-2 gap-4 p-4 lg:grid-cols-2 lg:grid-rows-1">
             <EditPanel
               screenshots={screenshots}
               onScreenshotsChange={setScreenshots}
