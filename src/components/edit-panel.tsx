@@ -2,6 +2,7 @@ import { EmptyState } from "@/components/empty-state";
 import { ScreenshotList } from "@/components/screenshot-list";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useConfig } from "@/context/config-provider";
 import { Screenshot } from "@/types";
 import { FileImage, Trash2 } from "lucide-react";
 
@@ -12,6 +13,13 @@ export function EditPanel({
   screenshots: Screenshot[];
   onScreenshotsChange: (screenshots: Screenshot[]) => void;
 }) {
+  const { setAnnotationText } = useConfig();
+
+  const handleClear = () => {
+    onScreenshotsChange([]);
+    setAnnotationText("");
+  };
+
   return (
     <Card>
       <Card.Header>
@@ -24,7 +32,7 @@ export function EditPanel({
               variant="ghost"
               className="size-8 rounded text-slate-500 hover:bg-slate-100 hover:text-slate-700"
               title="清空已上传截图"
-              onClick={() => onScreenshotsChange([])}
+              onClick={handleClear}
             >
               <Trash2 />
             </Button>

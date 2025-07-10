@@ -1,3 +1,4 @@
+import { useConfig } from "@/context/config-provider";
 import type { AnnotationPosition } from "@/types";
 import {
   RadioGroup,
@@ -13,16 +14,15 @@ const ANNOTATION_POSITIONS: AnnotationPosition[] = [
   "bottom-right",
 ];
 
-export function AnnotationPositionPicker({
-  defaultValue,
-}: {
-  defaultValue: AnnotationPosition;
-}) {
+export function AnnotationPositionPicker() {
+  const { annotationPosition, setAnnotationPosition } = useConfig();
+
   return (
     <RadioGroup
       name="position"
       className="grid grid-cols-2 gap-2 rounded-md border p-2"
-      defaultValue={defaultValue}
+      value={annotationPosition}
+      onValueChange={(v) => setAnnotationPosition(v as AnnotationPosition)}
     >
       {ANNOTATION_POSITIONS.map((pos) => (
         <RadioGroupItem

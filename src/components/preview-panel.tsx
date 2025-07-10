@@ -2,16 +2,14 @@ import { useEffect, useState } from "react";
 
 import { EmptyState } from "@/components/empty-state";
 import { Card } from "@/components/ui/card";
-import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useConfig } from "@/context/config-provider";
 import { mergeImages } from "@/lib/business";
-import { AnnotationPosition, Screenshot } from "@/types";
+import { Screenshot } from "@/types";
 import { FileImage } from "lucide-react";
 
 export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
+  const { annotationText, annotationPosition } = useConfig();
   const [previewImageUrl, setPreviewImageUrl] = useState<string>();
-  const [annotationText, setAnnotationText] = useState("");
-  const [annotationPosition, setAnnotationPosition] =
-    useLocalStorage<AnnotationPosition>("annotation-position", "bottom-right");
 
   useEffect(() => {
     if (screenshots.length > 0) {
@@ -28,12 +26,6 @@ export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
       setPreviewImageUrl(undefined);
     }
   }, [screenshots, annotationText, annotationPosition]);
-
-  useEffect(() => {
-    if (screenshots.length === 0) {
-      setAnnotationText("");
-    }
-  }, [screenshots]);
 
   return (
     <Card>
