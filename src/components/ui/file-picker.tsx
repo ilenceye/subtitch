@@ -4,12 +4,14 @@ export function FilePicker({
   children = "Import",
   className,
   accept,
+  title,
   id = "file-picker",
   onUpload,
 }: {
   children?: React.ReactNode;
   className?: string;
   accept: string[];
+  title?: string;
   id?: string;
   onUpload?: (data: FileList) => void;
 }) {
@@ -29,6 +31,7 @@ export function FilePicker({
       htmlFor={id}
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && inputRef.current?.click()}
+      title={title}
     >
       {children}
       <input
