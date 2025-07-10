@@ -9,16 +9,14 @@ import { usePreviewImage } from "@/hooks/use-preview-image";
 import { fromImageSrcsToScreenshots } from "@/lib/business";
 import { Screenshot } from "@/types";
 
+const IS_DEV = import.meta.env.DEV;
+
 const loadDemoImages = async () => {
-  if (import.meta.env.DEV) {
-    const a = await import("@/assets/screenshots/achtsam-morden-01.jpg");
-    const b = await import("@/assets/screenshots/achtsam-morden-02.jpg");
-    const c = await import("@/assets/screenshots/achtsam-morden-03.jpg");
-    const d = await import("@/assets/screenshots/achtsam-morden-04.jpg");
-    return [a, b, c, d].map((mod) => mod.default);
-  } else {
-    return [];
-  }
+  const a = await import("@/assets/screenshots/achtsam-morden-01.jpg");
+  const b = await import("@/assets/screenshots/achtsam-morden-02.jpg");
+  const c = await import("@/assets/screenshots/achtsam-morden-03.jpg");
+  const d = await import("@/assets/screenshots/achtsam-morden-04.jpg");
+  return [a, b, c, d].map((mod) => mod.default);
 };
 
 export default function App() {
@@ -33,7 +31,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (import.meta.env.DEV) {
+    if (IS_DEV) {
       loadDemoScreenshots();
     }
   }, []);
