@@ -49,7 +49,7 @@ export function EditPanel({
           </FilePicker>
           <Button
             variant="ghost"
-            className="size-8 rounded text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+            className="hover:text-destructive hover:bg-destructive/10 size-8 rounded text-slate-500"
             title="清空已上传截图"
             disabled={screenshots.length === 0}
             onClick={handleClear}
