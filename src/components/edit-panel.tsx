@@ -1,11 +1,9 @@
 import { EmptyState } from "@/components/empty-state";
 import { ScreenshotList } from "@/components/screenshot-list";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { FilePicker } from "@/components/ui/file-picker";
-import { fromImageSrcsToScreenshots } from "@/lib/business";
 import { Screenshot } from "@/types";
-import { FileImage, Plus, Trash2 } from "lucide-react";
+import { FileImage, Trash2 } from "lucide-react";
 
 export function EditPanel({
   screenshots,
@@ -14,13 +12,6 @@ export function EditPanel({
   screenshots: Screenshot[];
   onScreenshotsChange: (screenshots: Screenshot[]) => void;
 }) {
-  const handleSceenshotsUpload = (filelist: FileList) => {
-    const newImageUrls = Array.from(filelist, URL.createObjectURL);
-    const newScreenshots = fromImageSrcsToScreenshots(newImageUrls);
-
-    onScreenshotsChange([...screenshots, ...newScreenshots]);
-  };
-
   return (
     <Card>
       <Card.Header>
@@ -50,19 +41,6 @@ export function EditPanel({
           <EditPanelEmptyState />
         )}
       </Card.Body>
-      <Card.Footer>
-        <FilePicker
-          accept={["image/*"]}
-          className={buttonVariants({
-            variant: "default",
-            size: "lg",
-            class: "w-full",
-          })}
-          onUpload={handleSceenshotsUpload}
-        >
-          <Plus /> 添加屏幕截图
-        </FilePicker>
-      </Card.Footer>
     </Card>
   );
 }

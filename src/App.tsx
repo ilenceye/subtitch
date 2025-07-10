@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { EditPanel } from "@/components/edit-panel";
 import { PreviewPanel } from "@/components/preview-panel";
+import { Sidebar } from "@/components/sidebar/sidebar";
 import { fromImageSrcsToScreenshots } from "@/lib/business";
 import { Screenshot } from "@/types";
 
@@ -33,15 +34,18 @@ export default function App() {
   }, []);
 
   return (
-    <div className="h-screen p-4">
+    <div className="flex h-screen">
       <div className="mx-auto h-full max-w-7xl">
-        <div className="grid h-full grid-cols-2 gap-4">
+        <div className="grid h-full gap-4 p-4 lg:grid-cols-2">
           <EditPanel
             screenshots={screenshots}
             onScreenshotsChange={setScreenshots}
           />
           <PreviewPanel screenshots={screenshots} />
         </div>
+      </div>
+      <div className="shrink-0">
+        <Sidebar />
       </div>
     </div>
   );
