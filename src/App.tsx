@@ -39,7 +39,7 @@ export default function App() {
   return (
     <ConfigProvider value={{ config, ...rest }}>
       <div className="flex h-screen">
-        <div className="mx-auto h-full max-w-7xl">
+        <main className="mx-auto h-full w-full max-w-7xl">
           <div className="grid h-full gap-4 p-4 lg:grid-cols-2">
             <EditPanel
               screenshots={screenshots}
@@ -47,7 +47,7 @@ export default function App() {
             />
             <PreviewPanel previewImageUrl={previewImageUrl} />
           </div>
-        </div>
+        </main>
         <aside className="flex h-full w-[320px] shrink-0 flex-col bg-white">
           <AnnotationSection />
           <div className="grow" />
