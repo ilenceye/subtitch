@@ -1,32 +1,12 @@
-import { useEffect, useState } from "react";
-
 import { EmptyState } from "@/components/empty-state";
 import { Card } from "@/components/ui/card";
-import { useConfig } from "@/context/config-provider";
-import { mergeImages } from "@/lib/business";
-import { Screenshot } from "@/types";
 import { FileImage } from "lucide-react";
 
-export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
-  const { annotationText, annotationPosition } = useConfig();
-  const [previewImageUrl, setPreviewImageUrl] = useState<string>();
-
-  useEffect(() => {
-    if (screenshots.length > 0) {
-      mergeImages(
-        {
-          screenshots,
-          annotation: { text: annotationText, position: annotationPosition },
-        },
-        (outputImageUrl) => {
-          setPreviewImageUrl(outputImageUrl);
-        },
-      );
-    } else {
-      setPreviewImageUrl(undefined);
-    }
-  }, [screenshots, annotationText, annotationPosition]);
-
+export function PreviewPanel({
+  previewImageUrl,
+}: {
+  previewImageUrl?: string;
+}) {
   return (
     <Card>
       <Card.Header>
@@ -35,7 +15,7 @@ export function PreviewPanel({ screenshots }: { screenshots: Screenshot[] }) {
         </Card.Title>
       </Card.Header>
       <Card.Body className="overflow-auto">
-        {screenshots.length > 0 ? (
+        {previewImageUrl ? (
           <img src={previewImageUrl} alt="" />
         ) : (
           <PreviewPanelEmptyState />

@@ -4,7 +4,8 @@ import { EditPanel } from "@/components/edit-panel";
 import { PreviewPanel } from "@/components/preview-panel";
 import { AnnotationSection } from "@/components/sidebar/annotation-section";
 import { DownloadSection } from "@/components/sidebar/download-section";
-import { ConfigProvider } from "@/context/config-provider";
+import { ConfigProvider, useConfig } from "@/context/config-provider";
+import { usePreviewImage } from "@/hooks/use-preview-image";
 import { fromImageSrcsToScreenshots } from "@/lib/business";
 import { Screenshot } from "@/types";
 
@@ -22,6 +23,8 @@ const loadDemoImages = async () => {
 
 export default function App() {
   const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
+  const { config, ...rest } = useConfig();
+  const previewImageUrl = usePreviewImage(screenshots, config);
 
   const loadDemoScreenshots = async () => {
     const imagesPaths = await loadDemoImages();
@@ -36,7 +39,7 @@ export default function App() {
   }, []);
 
   return (
-    <ConfigProvider>
+    <ConfigProvider value={{ config, ...rest }}>
       <div className="flex h-screen">
         <div className="mx-auto h-full max-w-7xl">
           <div className="grid h-full gap-4 p-4 lg:grid-cols-2">
@@ -44,13 +47,13 @@ export default function App() {
               screenshots={screenshots}
               onScreenshotsChange={setScreenshots}
             />
-            <PreviewPanel screenshots={screenshots} />
+            <PreviewPanel previewImageUrl={previewImageUrl} />
           </div>
         </div>
         <aside className="flex h-full w-[320px] shrink-0 flex-col bg-white">
           <AnnotationSection />
           <div className="grow" />
-          <DownloadSection />
+          <DownloadSection previewImageUrl={previewImageUrl} />
         </aside>
       </div>
     </ConfigProvider>

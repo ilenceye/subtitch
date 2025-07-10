@@ -21,3 +21,7 @@ export type Annotation = {
   text: string;
   position: AnnotationPosition;
 };
+
+export type Config = {
+  annotation: Annotation;
+};

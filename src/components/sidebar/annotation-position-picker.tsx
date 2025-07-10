@@ -1,4 +1,4 @@
-import { useConfig } from "@/context/config-provider";
+import { useConfigContext } from "@/context/config-provider";
 import type { AnnotationPosition } from "@/types";
 import {
   RadioGroup,
@@ -15,7 +15,7 @@ const ANNOTATION_POSITIONS: AnnotationPosition[] = [
 ];
 
 export function AnnotationPositionPicker() {
-  const { annotationPosition, setAnnotationPosition } = useConfig();
+  const { annotationPosition, setAnnotationPosition } = useConfigContext();
 
   return (
     <RadioGroup

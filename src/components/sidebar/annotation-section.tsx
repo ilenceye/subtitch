@@ -1,10 +1,10 @@
 import { AnnotationPositionPicker } from "@/components/sidebar/annotation-position-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useConfig } from "@/context/config-provider";
+import { useConfigContext } from "@/context/config-provider";
 
 export function AnnotationSection() {
-  const { annotationText, setAnnotationText } = useConfig();
+  const { annotationText, setAnnotationText } = useConfigContext();
 
   return (
     <div className="space-y-4 border-b p-4">

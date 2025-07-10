@@ -2,7 +2,7 @@ import { EmptyState } from "@/components/empty-state";
 import { ScreenshotList } from "@/components/screenshot-list";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useConfig } from "@/context/config-provider";
+import { useConfigContext } from "@/context/config-provider";
 import { Screenshot } from "@/types";
 import { FileImage, Trash2 } from "lucide-react";
 
@@ -13,7 +13,7 @@ export function EditPanel({
   screenshots: Screenshot[];
   onScreenshotsChange: (screenshots: Screenshot[]) => void;
 }) {
-  const { setAnnotationText } = useConfig();
+  const { setAnnotationText } = useConfigContext();
 
   const handleClear = () => {
     onScreenshotsChange([]);
