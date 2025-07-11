@@ -12,7 +12,7 @@ export const usePreviewImage = (screenshots: Screenshot[], config: Config) => {
       mergeImages(
         {
           screenshots,
-          annotation: { text: annotation.text, position: annotation.position },
+          config,
         },
         (outputImageUrl) => {
           setPreviewImageUrl(outputImageUrl);

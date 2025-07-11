@@ -1,4 +1,4 @@
-import { Annotation, Screenshot } from "@/types";
+import { Config, Screenshot } from "@/types";
 
 export function fromImageSrcsToScreenshots(imageSrcs: string[]) {
   return imageSrcs.map((imageUrl) => ({
@@ -14,13 +14,10 @@ export function fromImageSrcsToScreenshots(imageSrcs: string[]) {
 export function mergeImages(
   {
     screenshots,
-    annotation = {
-      text: "",
-      position: "bottom-right",
-    },
+    config,
   }: {
     screenshots: Screenshot[];
-    annotation?: Annotation;
+    config: Config;
   },
   callback: (DataURL: string) => void,
 ) {
@@ -95,7 +92,7 @@ export function mergeImages(
   }
 
   function addAnnotation() {
-    let { text, position } = annotation;
+    let { text, position } = config.annotation;
     if (!ctx || text === "") return;
     text = `©${text}`;
 
