@@ -38,9 +38,16 @@ export function mergeImages(
       imagesLoaded++;
 
       if (index === 0) {
+        // 第一张图取 bottom DragController 以上的
         canvas.width = img.width;
-        canvasHeight = canvasHeight + img.height;
+        canvasHeight =
+          canvasHeight +
+          Math.floor(
+            img.height *
+              (screenshot.clipArea.topPcnt + screenshot.clipArea.heightPcnt),
+          );
       } else {
+        // 剩下的图取字幕区域
         const subtitleAreaHeight = Math.floor(
           img.height * screenshot.clipArea.heightPcnt,
         );
@@ -66,13 +73,18 @@ export function mergeImages(
     let dy = 0;
 
     images.forEach((img, idx) => {
+      const screenshot = screenshots[idx];
+
       if (idx === 0) {
-        // 第一张图取全部
-        ctx?.drawImage(img, dx, dy);
-        dy = dy + img.height;
+        // 第一张图取 bottom DragController 以上的
+        const sHeight = Math.floor(
+          img.height *
+            (screenshot.clipArea.topPcnt + screenshot.clipArea.heightPcnt),
+        );
+        ctx?.drawImage(img, 0, 0, img.width, sHeight, 0, 0, img.width, sHeight);
+        dy = dy + sHeight;
       } else {
         // 剩下的图取字幕区域
-        const screenshot = screenshots[idx];
         const sy = Math.floor(img.height * screenshot.clipArea.topPcnt);
         const sHeight = Math.floor(img.height * screenshot.clipArea.heightPcnt);
         ctx?.drawImage(
