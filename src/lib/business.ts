@@ -69,37 +69,28 @@ export function mergeImages(
   // 这里绘制图片时，第一张图取全部，剩下的图取字幕区域
 
   function drawImages() {
-    const dx = 0;
     let dy = 0;
+    let sy = 0;
+    let sHeight = 0;
 
     images.forEach((img, idx) => {
       const screenshot = screenshots[idx];
 
       if (idx === 0) {
         // 第一张图取 bottom DragController 以上的
-        const sHeight = Math.floor(
+        sHeight = Math.floor(
           img.height *
             (screenshot.clipArea.topPcnt + screenshot.clipArea.heightPcnt),
         );
-        ctx?.drawImage(img, 0, 0, img.width, sHeight, 0, 0, img.width, sHeight);
-        dy = dy + sHeight;
       } else {
         // 剩下的图取字幕区域
-        const sy = Math.floor(img.height * screenshot.clipArea.topPcnt);
-        const sHeight = Math.floor(img.height * screenshot.clipArea.heightPcnt);
-        ctx?.drawImage(
-          img,
-          0,
-          sy,
-          img.width,
-          sHeight,
-          dx,
-          dy,
-          img.width,
-          sHeight,
-        );
-        dy = dy + sHeight;
+        sy = Math.floor(img.height * screenshot.clipArea.topPcnt);
+        sHeight = Math.floor(img.height * screenshot.clipArea.heightPcnt);
       }
+
+      ctx?.drawImage(img, 0, sy, img.width, sHeight, 0, dy, img.width, sHeight);
+
+      dy = dy + sHeight;
     });
   }
 
